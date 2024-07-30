@@ -18,13 +18,3 @@ jobs:
       with:
         PROJECT_PATH: GameCorner  # 您的项目目录
         REQUIREMENT_PATH: ../requirements.txt  # 生成 requirements.txt 的路径
-
-    - name: Add and commit requirements.txt
-      run: |
-        git config --global user.name 'github-actions[bot]'
-        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-        git add GameCorner/requirements.txt
-        git commit -m 'Auto-generate requirements.txt' || echo "No changes to commit"
-        git push
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
