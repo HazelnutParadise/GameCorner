@@ -3,7 +3,7 @@ name: Generate requirements.txt
 on:
   push:
     branches:
-      - main  # 您可以根據需要更改分支名稱
+      - main  # 您可以根据需要更改分支名称
 
 jobs:
   build:
@@ -16,33 +16,28 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: '3.11'  # 替換為您需要的 Python 版本
+        python-version: '3.12'  # 替换为您需要的 Python 版本
 
-    - name: Install pipreqs
+    - name: Install pydeps
       run: |
         python -m pip install --upgrade pip
-        pip install pipreqs
+        pip install pydeps
 
-    - name: Generate requirements.txt
+    - name: Generate dependencies graph
       run: |
-        pipreqs ./GameCorner --force
+        pydeps ./GameCorner --noshow --max-bacon=2 > deps.txt
 
-    - name: Check if requirements.txt exists
+    - name: Extract dependencies
       run: |
-        if [ ! -f requirements.txt ]; then
-          echo "requirements.txt not found, creating an empty one."
-          touch requirements.txt
-        fi
+        grep -oP '(?<=import ).*' deps.txt | grep -v 'GameCorner' > requirements.txt
+        cat requirements.txt  # 显示生成的 requirements.txt 内容
 
-    - name: Add requirements.txt to Git tracking
-      run: |
-        git add requirements.txt
-
-    - name: Commit and push changes
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Add and commit requirements.txt
       run: |
         git config --global user.name 'github-actions[bot]'
         git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+        git add requirements.txt
         git commit -m 'Auto-generate requirements.txt' || echo "No changes to commit"
         git push
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
