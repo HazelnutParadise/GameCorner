@@ -5,7 +5,7 @@ A web game platform of [hazelnut-paradise.com](https://hazelnut-paradise.com "ha
 <br/>
 
 ---
-## ⚠️This project is still under development and contributions are WELCOMED.<br/>⚠️此專案尚在開發中，歡迎參與貢獻。
+## ⚠️ This project is still under development and contributions are WELCOMED.<br/>⚠️ 此專案尚在開發中，歡迎參與貢獻。
 To participate, please have a look at [CONTRIBUTING.md](CONTRIBUTING.md).<br/>
 若要參與開發，請參閱 [CONTRIBUTING.md](CONTRIBUTING.md) 中的說明。<br/>
 #### [Buying me a coffee](https://www.paypal.com/paypalme/tingzhen666) is also a good choice to support this project.<br/>您也可以 [小額贊助](https://www.paypal.com/paypalme/tingzhen666) 來幫助此專案的開發。
