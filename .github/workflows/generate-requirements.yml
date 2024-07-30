@@ -16,7 +16,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: '3.12'  # 替換為您需要的 Python 版本
+        python-version: '3.11'  # 替換為您需要的 Python 版本
 
     - name: Install pipreqs
       run: |
