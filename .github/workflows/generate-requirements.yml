@@ -17,7 +17,7 @@ jobs:
       uses: ryan-rozario/pipreqs-action@master
       with:
         PROJECT_PATH: GameCorner  # 您的项目目录
-        REQUIREMENT_PATH: ./requirements.txt  # 生成 requirements.txt 的路径
+        REQUIREMENT_PATH: ../requirements.txt  # 生成 requirements.txt 的路径
 
     - name: Add and commit requirements.txt
       run: |
