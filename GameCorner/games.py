@@ -11,39 +11,31 @@ def read_script(file_path: str) -> str:
     with open(file_path, 'r') as file:
         return file.read()
 
-def get_game_data(skip: int = 0, limit: int = 4) -> list:
+def get_game_list(skip: int = 0, limit: int = 4) -> list:
     # 從api獲取遊戲數據
     result = requests.post(Env.DB_SQL_API, headers={
             'content-type': 'application/json'
         },
         data=json.dumps({
-            "sql_statement": f"SELECT * FROM games order by name asc LIMIT {limit} OFFSET {skip};",
+            "sql_statement": f"""
+            SELECT id, name, description, cover_image FROM games order by id desc LIMIT {limit} OFFSET {skip};
+            """, # 以 id 降冪排序，配合懶加載，可達成較新的遊戲在前
             'query_mode': True,
             'return_as_dict': True
         })
     )
     games = result.json()
-    games['title'] = games['name']
-    # all_game_dirs = [file for file in os.listdir(GAMES_DIRECTORY) if os.path.isdir(os.path.join(GAMES_DIRECTORY, file))]
-    # all_game_dirs = sorted(all_game_dirs)  # 现在按字母顺序排序
-    # selected_game_dirs = all_game_dirs[skip:skip + limit]
-
-    # games = []
-    # for game_dir in selected_game_dirs:
-    #     game_path = os.path.join(GAMES_DIRECTORY, game_dir)
-    #     if os.path.isdir(game_path):
-    #         metadata_path = os.path.join(game_path, "metadata.json")
-    #         with open(metadata_path, 'r') as file:
-    #             metadata = json.load(file)
-    #         cover_image_path = os.path.join(game_path, metadata["cover_image"])
-    #         if not os.path.exists(cover_image_path):
-    #             cover_image_path = "src/default.webp"
-    #         cover_image_base64 = encode_image_to_base64(cover_image_path)
-    #         games.append({
-    #             "title": metadata["title"],
-    #             "description": metadata["description"],
-    #             "cover_image": f"data:image/jpeg;base64,{cover_image_base64}"
-    #         })
+    # games 是一個列表，每個元素是一個字典，代表一個遊戲
+    # [
+    # {
+    #     'id': 1,
+    #     'name': '遊戲1',
+    #     'description': '這是遊戲1的描述',
+    #     'cover_image': 'data:image/png;base64,xxxxxx'
+    # },
+    # ...
+    # ]
+   
     return games
 
 def post_game_data(title, description, cover_image, game_file) -> None:

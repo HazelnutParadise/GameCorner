@@ -45,7 +45,7 @@ async def load_games_list(request: Request) -> list:
         skip = data['skip']
         limit = data['limit']
         # 假设 get_game_data 是一个同步函数，需要适当的处理数据获取逻辑
-        games_list = games.get_game_data(skip=skip, limit=limit)
+        games_list = games.get_game_list(skip=skip, limit=limit)
         return games_list
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
