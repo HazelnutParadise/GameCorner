@@ -12,11 +12,11 @@ To participate, please have a look at [CONTRIBUTING.md](CONTRIBUTING.md).<br/>
 ---
 <br/>
 
-## Project structure 專案架構
+## Project Structure 專案架構
 The code of the project will be placed in the "[**GameCorner**](GameCorner)" folder.<br/>
 此專案的程式碼會放在「[**GameCorner**](GameCorner)」資料夾中。<br/>
 <br/>
 
 ## Deployment 部署
-Due to the lack of the `.env` file, you are unable to deploy the service yourself without any modifications. However, feel free to build your own service base on the project as long as it follows our [Apache 2.0 License](LICENSE)!<br/>
-由於本專案未提供執行所需的環境變數，您無法直接部署此服務。但我們歡迎您遵循 [Apache License 2.0](LICENSE) 授權，使用此專案程式碼建立自己的服務！
+#### Due to the lack of the `.env` file, you are unable to deploy the service yourself without any modifications. However, feel free to build your own service base on the project as long as it follows our [Apache 2.0 License](LICENSE)!
+#### 由於本專案未提供執行所需的環境變數，您無法直接部署此服務。但我們歡迎您遵循 [Apache License 2.0](LICENSE) 授權，使用此專案程式碼建立自己的服務！
