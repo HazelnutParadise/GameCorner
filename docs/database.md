@@ -1,5 +1,6 @@
 # Database Structures 資料庫結構
 ### We use Python lists to show our database structures. This is also what you will get using the database APIs in this project.<br/><br/>我們使用 Python 串列來表示資料庫結構，此專案中的資料庫 API 亦會回傳類似的東西。
+<br/>
 
 ## Games
 ```py
