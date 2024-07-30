@@ -9,3 +9,25 @@
   ```
   pip install -r requirements.txt
   ```
+## Project Structure 專案架構
+```py
+GameCorner/
+│
+├── GameCorner.py  # the entry point of the program  # 程式的進入點
+├── load_env.py  # load the .env file  # 載入 .env 檔
+├── games.py  # the code about loading game files  # 用於載入遊戲的程式碼
+├── users.py  # the code that controls things about users  # 跟使用者有關的程式碼
+├── templates/  # HTML templates  # HTML 模板
+    ├── index.html  # home page  # 首頁
+    └── game.html  # game page for each game  # 個別遊戲的遊戲頁面
+├── static/  # static resources  # 靜態資源
+    └── GameCorner.ico  # Favicon
+└── src/  # the place for images or something else  # 放圖片其他東西的地方
+    └── ...
+```
+
+
+## TODO
+- [ ] Load game files through database API. 透過資料庫的 API 讀取遊戲檔案。
+- [ ] The game page. 遊戲頁面。
+- [ ] A page for game producers to manage games and upload game files. 遊戲檔案的管理和上傳頁面。
