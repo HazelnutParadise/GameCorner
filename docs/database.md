@@ -5,7 +5,7 @@
 ## Games
 ```py
 tables['Games'] = [{
-    'id' : 'INTEGER PRIMARY KEY AUTOINCREMENT'
+    'id' : 'INTEGER PRIMARY KEY AUTOINCREMENT',
     'name':'TEXT',
     'description': 'TEXT',
     'cover_image': 'BLOB',
