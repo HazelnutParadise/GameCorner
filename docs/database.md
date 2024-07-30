@@ -9,8 +9,9 @@ tables['Games'] = [{
     'name':'TEXT',
     'description': 'TEXT',
     'cover_image': 'BLOB',
-    'entry_file': 'BLOB',
-    'game_files': 'BLOB',
+    'entry_file': 'BLOB',  # the entry file of a game (HTML)  # 遊戲的進入點 (HTML)
+    'game_files': 'BLOB',  # other game files (.js, .css, etc), not including the entry file.
+                            # 其他遊戲檔案 (.js, .css 等)，不含進入點 HTML 檔。
     'highest_score': 'REAL DEFAULT 0',
     'achievement_holder': 'TEXT'
 }, {
