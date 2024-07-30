@@ -28,7 +28,7 @@ tables['GamePlayingRecords'] = [{
     'time': 'DATETIME',
     'score': 'REAL'
 }, {
-    'game_name': 'Games(id)',
-    'user_uuid': 'Users(uuid)'
+    'game_id': 'Games(id)',  # FK1
+    'user_uuid': 'Users(uuid)'  # FK2
 }]
 ```
