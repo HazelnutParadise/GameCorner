@@ -34,6 +34,10 @@ jobs:
           touch requirements.txt
         fi
 
+    - name: Add requirements.txt to Git tracking
+      run: |
+        git add requirements.txt
+
     - name: Commit and push changes
       run: |
         git config --global user.name 'github-actions[bot]'
