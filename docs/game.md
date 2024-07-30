@@ -23,6 +23,7 @@ Other game files, such as JavaScript or CSS, will be converted into a **Python d
   # ...更多
 }
 ```
+<br/>
 
 # Game Page 遊戲頁面
 GameCorner have to find the `<GAME>` tag in **entry files**, and put the content between `<GAME>` and `</GAME>` in the `<div>` on the ***game page***.<br/>
