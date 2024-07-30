@@ -18,8 +18,10 @@ jobs:
       with:
         python-version: '3.12'  # 替换为您需要的 Python 版本
 
-    - name: Install pydeps
+    - name: Install dependencies
       run: |
+        sudo apt-get update
+        sudo apt-get install -y graphviz
         python -m pip install --upgrade pip
         pip install pydeps
 
