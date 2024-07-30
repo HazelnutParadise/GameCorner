@@ -13,32 +13,17 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Set up Python
-      uses: actions/setup-python@v2
+    - name: Automatic requirements.txt for Python Project
+      uses: ryan-rozario/pipreqs-action@master
       with:
-        python-version: '3.12'  # 替换为您需要的 Python 版本
-
-    - name: Install dependencies
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y graphviz
-        python -m pip install --upgrade pip
-        pip install pydeps
-
-    - name: Generate dependencies graph
-      run: |
-        pydeps ./GameCorner --noshow --max-bacon=2 > deps.txt
-
-    - name: Extract dependencies
-      run: |
-        grep -oP '(?<=import ).*' deps.txt | grep -v 'GameCorner' > requirements.txt
-        cat requirements.txt  # 显示生成的 requirements.txt 内容
+        PROJECT_PATH: GameCorner  # 您的项目目录
+        REQUIREMENT_PATH: ./requirements.txt  # 生成 requirements.txt 的路径
 
     - name: Add and commit requirements.txt
       run: |
         git config --global user.name 'github-actions[bot]'
         git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-        git add requirements.txt
+        git add GameCorner/requirements.txt
         git commit -m 'Auto-generate requirements.txt' || echo "No changes to commit"
         git push
       env:
