@@ -22,7 +22,7 @@ GameCorner/
     └── game.html  # game page for each game  # 個別遊戲的遊戲頁面
 ├── static/  # static resources  # 靜態資源
     └── GameCorner.ico  # Favicon
-└── src/  # the place for images or something else  # 放圖片其他東西的地方
+└── src/  # the place for images or something else  # 放圖片和其他東西的地方
     └── ...
 ```
 
