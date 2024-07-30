@@ -12,7 +12,7 @@ To participate, please have a look at [CONTRIBUTING.md](CONTRIBUTING.md).<br/>
 ---
 <br/>
 
-## Project Structure 專案架構
+## Code 程式碼
 The code of the project will be placed in the "[**GameCorner**](GameCorner)" folder.<br/>
 此專案的程式碼會放在「[**GameCorner**](GameCorner)」資料夾中。<br/>
 <br/>
