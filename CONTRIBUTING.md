@@ -26,6 +26,9 @@ GameCorner/
     └── ...
 ```
 
+## Docs 相關文件
+See documents in "[docs](./docs)" folder to learn more about this project.<br/>
+參考「[docs](./docs)」資料夾中的文件來了解更多關於本專案的細節。
 
 ## TODO
 - [ ] Load game files through database API. 透過資料庫的 API 讀取遊戲檔案。
