@@ -24,18 +24,16 @@ LOADER_IMG = f"data:image/png;base64,{utils.encode_local_image_to_base64('src/lo
 # Define your routes and handlers here
 
 @app.get("/")
-def home(request: Request):
+async def home(request: Request):
     title = DEFAULT_TITLE
     return templates.TemplateResponse("index.html", {"request": request, "title": title, "loader": LOADER_IMG})
 
 @app.post("/check_login_cookie")
-def check_login_cookie(cookie: dict = Body(...)) -> bool:
-    try:
-        if cookie:
-            return users.check_login(cookie=cookie)
-    except:
-        pass
-    return False
+async def check_login_cookie(cookie: dict = Body(...)) -> bool:
+    if cookie:
+        return await users.check_login(cookie=cookie)
+    else:
+        return False
 
 @app.post("/load_games_list")
 async def load_games_list(request: Request) -> list:
