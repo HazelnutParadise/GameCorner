@@ -74,7 +74,9 @@ async def game_page(request: Request, game_id: int):
     # TODO: 遊戲檔案渲染
     return templates.TemplateResponse("game.html", {"request": request, "game": game})
 
-
+@app.get("/game/resource/{game_id}/{file_name}")
+async def game_resource(game_id: int, file_name: str):
+    return await games.get_game_resource(game_id, file_name)
 
 
 if __name__ == "__main__":

@@ -43,7 +43,22 @@ async def get_game(id: int) -> dict | None:
         }) as response:
             game = await response.json() if response.status == 200 else None
             return game
-
+        
+# 從api獲取遊戲依賴資源
+async def get_game_resource(id: int, file_name: str) -> bytes | None:
+    async with aiohttp.ClientSession() as session:
+        url = f"{Env.DB_SQL_API}?relation=Games&conditions_str={json.dumps({'id': id})}&to_query={json.dumps(['game_files'])}"
+        async with session.get(Env.DB_RECORD_API, headers={
+            'content-type': 'application/json'
+        }) as response:
+            files = await response.json() if response.status == 200 else None
+            if files:
+                files = files[0]
+                # 這裡的 files 是一個字典，key 是檔案名，value 是 base64 編碼的檔案內容
+                file_content_to_return = files.get(file_name)
+                if file_content_to_return:
+                    return utils.decode_base64(file_content_to_return)
+            return None
 
 # TODO: 上傳遊戲到資料庫
 # 本函數內容不正確
