@@ -19,12 +19,12 @@ GameCorner/
 ├── users.py  # the code that controls things about users  # 跟使用者有關的程式碼
 ├── utils.py  # other functions  # 其他函數
 ├── .env  # your environment variable file (we do not provide, but it should be placed here)
-          # 您的環境變數檔（我們沒有提供，但它應該放在這裡）
+│         # 您的環境變數檔（我們沒有提供，但它應該放在這裡）
 ├── templates/  # HTML templates  # HTML 模板
-    ├── index.html  # home page  # 首頁
-    └── game.html  # game page for each game  # 個別遊戲的遊戲頁面
+│    ├── index.html  # home page  # 首頁
+│    └── game.html  # game page for each game  # 個別遊戲的遊戲頁面
 ├── static/  # static resources  # 靜態資源
-    └── GameCorner.ico  # Favicon
+│    └── GameCorner.ico  # Favicon
 └── src/  # the place for images or something else  # 放圖片和其他東西的地方
     └── ...
 ```
