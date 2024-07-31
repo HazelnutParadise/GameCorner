@@ -68,10 +68,11 @@ def update_game_data(game_data: GameData):
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-# @app.get("/game/{game_name}")
-# def game_page(request: Request, game_name: str):
-#     # get_game()
-#     return templates.TemplateResponse("game.html", {"request": request, "game": game})
+@app.get("/game/{game_id}")
+async def game_page(request: Request, game_id: int):
+    game = await games.get_game(game_id)
+    # TODO: 遊戲檔案渲染
+    return templates.TemplateResponse("game.html", {"request": request, "game": game})
 
 
 

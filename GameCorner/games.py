@@ -1,6 +1,7 @@
 #################### games.py ####################
 import json
 import os
+import aiohttp
 import requests
 from load_env import Env
 import utils
@@ -31,6 +32,17 @@ def get_game_list(skip: int = 0, limit: int = 4) -> list:
     # ...
     # ]
     return games
+
+
+# 從api獲取單個遊戲
+async def get_game(id: int) -> dict | None:
+    async with aiohttp.ClientSession() as session:
+        url = f"{Env.DB_SQL_API}?relation=Games&conditions_str={json.dumps({'id': id})}&return_as_dict=True"
+        async with session.get(Env.DB_RECORD_API, headers={
+            'content-type': 'application/json'
+        }) as response:
+            game = await response.json() if response.status == 200 else None
+            return game
 
 
 # TODO: 上傳遊戲到資料庫
