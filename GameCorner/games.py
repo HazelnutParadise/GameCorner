@@ -5,6 +5,7 @@ import requests
 from load_env import Env
 import utils
 
+
 # 從api獲取遊戲列表
 def get_game_list(skip: int = 0, limit: int = 4) -> list:
     result = requests.post(Env.DB_SQL_API, headers={
@@ -87,6 +88,7 @@ def update_game_data(id, name=None, description=None, cover_image=None, entry_fi
     if result.get('status') != "success":
         return result.get('message')
     return None
+
 
 # 刪除遊戲
 def delete_game(id) -> None | str:
