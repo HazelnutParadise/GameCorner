@@ -17,6 +17,7 @@ GameCorner/
 ├── load_env.py  # load the .env file  # 載入 .env 檔
 ├── games.py  # the code about loading game files  # 用於載入遊戲的程式碼
 ├── users.py  # the code that controls things about users  # 跟使用者有關的程式碼
+├── utils.py  # other functions  # 其他函數
 ├── templates/  # HTML templates  # HTML 模板
     ├── index.html  # home page  # 首頁
     └── game.html  # game page for each game  # 個別遊戲的遊戲頁面
