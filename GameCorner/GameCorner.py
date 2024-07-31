@@ -10,6 +10,7 @@ from typing import Optional
 
 import games
 import users
+import utils
 
 # Create an instance of the FastAPI app
 app = FastAPI()
@@ -18,7 +19,7 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 # Create an instance of the Jinja2Templates class
 templates = Jinja2Templates(directory="templates")
 DEFAULT_TITLE = "遊戲角落 - 榛果繽紛樂"
-LOADER_IMG = f"data:image/png;base64,{games.encode_image_to_base64('src/loader.png')}"
+LOADER_IMG = f"data:image/png;base64,{utils.encode_image_to_base64('src/loader.png')}"
 
 # Define your routes and handlers here
 
