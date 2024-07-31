@@ -34,7 +34,7 @@ def get_game_list(skip: int = 0, limit: int = 4) -> list:
 
 # TODO: 上傳遊戲到資料庫
 # 本函數內容不正確
-def post_game_data(title, description, cover_image, entry_file,  game_files) -> None:
+def post_game_data(title, description, cover_image, entry_file,  game_files) -> None | str:
     entry_file = utils.encode_base64(entry_file)
 
     # TODO: cover_image 需先處理為 bytes 的形式
@@ -50,29 +50,59 @@ def post_game_data(title, description, cover_image, entry_file,  game_files) -> 
         "game_file": game_files
     }
     # 將遊戲數據發送到api
-    requests.post(Env.DB_RECORD_API, headers={
+    result = requests.post(Env.DB_RECORD_API, headers={
         'content-type': 'application/json'
         },
         data=json.dumps({
             'records': game_data,
             'relation': "Games"
         }))
+    result = result.json()
+    if result.get('status') != "success":
+        return result.get('message')
+    else:
+        return None
 
-# TODO: 更新現有遊戲到資料庫
-# 本函數內容不正確
-def update_game_data(title, description, cover_image, game_file) -> None:
+
+# 更新現有遊戲到資料庫
+def update_game_data(id, name=None, description=None, cover_image=None, entry_file=None, game_files=None) -> None | str:
     game_data: dict = {
-        "title": title,
+        "name": name,
         "description": description,
         "cover_image": cover_image,
-        "game_file": game_file
+        "entry_file": entry_file,
+        "game_file": game_files
     }
+
     # 將遊戲數據發送到api
-    requests.put(Env.DB_RECORD_API, headers={
+    result = requests.put(Env.DB_RECORD_API, headers={
         'content-type': 'application/json'
         }, data=json.dumps({
-            'conditions': {}, # TODO!
+            'conditions': {'id': id},
             'records': game_data,
             'relation': "Games"
         }))
+    
+    result = result.json()
+    if result.get('status') != "success":
+        return result.get('message')
+    return None
 
+# 刪除遊戲
+def delete_game(id) -> None | str:
+    condition = {
+        "id": id
+    }
+    condition_str = json.dumps(condition)
+
+    url = f"{Env.DB_RECORD_API}?relation=Games&conditions_str={condition_str}"
+
+    # 將遊戲數據發送到api
+    result = requests.delete(url, headers={
+        'content-type': 'application/json'
+        })
+    
+    result = result.json()
+    if result.get('status') != "success":
+        return result.get('message')
+    return None
