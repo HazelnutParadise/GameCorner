@@ -6,13 +6,8 @@ import requests
 from load_env import Env
 
 
-def read_script(file_path: str) -> str:
-    """读取文件并返回文件内容"""
-    with open(file_path, 'r') as file:
-        return file.read()
-
 def get_game_list(skip: int = 0, limit: int = 4) -> list:
-    # 從api獲取遊戲數據
+    # 從api獲取遊戲列表
     result = requests.post(Env.DB_SQL_API, headers={
             'content-type': 'application/json'
         },
@@ -35,9 +30,11 @@ def get_game_list(skip: int = 0, limit: int = 4) -> list:
     # },
     # ...
     # ]
-   
     return games
 
+
+# TODO: 上傳遊戲到資料庫
+# 本函數內容不正確
 def post_game_data(title, description, cover_image, game_file) -> None:
     game_data: dict = {
         "title": title,
@@ -54,6 +51,8 @@ def post_game_data(title, description, cover_image, game_file) -> None:
             'relation': "Games"
         }))
 
+# TODO: 更新現有遊戲到資料庫
+# 本函數內容不正確
 def update_game_data(title, description, cover_image, game_file) -> None:
     game_data: dict = {
         "title": title,
