@@ -11,7 +11,7 @@ from typing import Optional
 import games
 import users
 import utils
-import Renderer
+from Renderer import Renderer
 from load_env import Env
 
 # Create an instance of the FastAPI app
@@ -78,7 +78,8 @@ async def game_page(request: Request, game_id: int):
     
     entry_file = game.get("entry_file")
     resources = game.get("game_files")
-    Renderer.render_html(entry_file, resources, backend_url=Env.BACKEND_URL)
+    resources_url = f"{Env.BACKEND_URL}/game/resource/{game_id}"
+    Renderer.render_html(entry_file, resources, backend_url=resources_url, only_render_between_GAME_tags=True)
     return templates.TemplateResponse("game.html", {"request": request, "game": game})
 
 @app.get("/game/resource/{game_id}/{file_name}")

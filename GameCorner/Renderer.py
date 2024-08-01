@@ -22,8 +22,23 @@ class Renderer:
     # ]
 
     @classmethod
-    def render_html(cls, html_content, resources: list[dict] = None, backend_url: str = ""):
+    def render_html(cls, html_content, resources: list[dict] = None, backend_url: str = "", only_render_between_GAME_tags: bool = False):
         html_content = utils.decode_base64(html_content)
+        if only_render_between_GAME_tags:
+            # 只渲染介於 <GAME> 標籤之間的內容
+            game_tag_regex = re.compile(r'<GAME>([\s\S]*?)</GAME>')
+            match = game_tag_regex.search(html_content)
+            if match:
+                html_content = match.group(1)
+            else:
+                html_content = """
+                <h1>Failed to render game content.</h1>
+                <p>Please make sure that your HTML content is wrapped between &lt;GAME&gt; and &lt;&sol;GAME&gt; tags. Anything outside the tag will not be rendered.</p>
+                <br/>
+                <p>請確保遊戲的 HTML 內容被包裹在 &lt;GAME&gt; 和 &lt;&sol;GAME&gt; 標籤之間。標籤之外的內容將不會被渲染。</p>
+                """
+                return html_content
+
         if not resources:
             return html_content
         # 處理 HTML 內容中的資源標籤
