@@ -18,6 +18,7 @@ GameCorner/
 ├── games.py  # the code about loading game files  # 用於載入遊戲的程式碼
 ├── users.py  # the code that controls things about users  # 跟使用者有關的程式碼
 ├── utils.py  # other functions  # 其他函數
+├── Renderer.py  # to render the game HTML  # 用於將遊戲程式的入口檔和依賴資源組裝起來的渲染器
 ├── .env  # your environment variable file (we do not provide, but it should be placed here)
 │         # 您的環境變數檔（我們沒有提供，但它應該放在這裡）
 ├── templates/  # HTML templates  # HTML 模板
