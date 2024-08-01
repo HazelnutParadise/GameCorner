@@ -22,7 +22,7 @@ class Renderer:
     # ]
 
     @classmethod
-    def render_html(cls, html_content, resources: list[dict] = None, backend_url: str = "", only_render_between_GAME_tags: bool = False):
+    def render_html(cls, html_content, resources: list[dict] = None, backend_url: str = "", only_render_between_GAME_tags: bool = False, safe_mode: bool = True):
         html_content = utils.decode_base64(html_content)
         if only_render_between_GAME_tags:
             # 只渲染介於 <GAME> 標籤之間的內容
@@ -32,18 +32,32 @@ class Renderer:
                 html_content = match.group(1)
             else:
                 html_content = """
-                <h1>Failed to render game content.</h1>
-                <p>Please make sure that your HTML content is wrapped between &lt;GAME&gt; and &lt;&sol;GAME&gt; tags. Anything outside the tag will not be rendered.</p>
-                <br/>
-                <p>請確保遊戲的 HTML 內容被包裹在 &lt;GAME&gt; 和 &lt;&sol;GAME&gt; 標籤之間。標籤之外的內容將不會被渲染。</p>
+                <div class="errorMessage">
+                    <h1>Failed to render game content.</h1>
+                    <p>Please make sure that your HTML content is wrapped between &lt;GAME&gt; and &lt;&sol;GAME&gt; tags. Anything outside the tag will not be rendered.</p>
+                    <br/>
+                    <p>請確保遊戲的 HTML 內容被包裹在 &lt;GAME&gt; 和 &lt;&sol;GAME&gt; 標籤之間。標籤之外的內容將不會被渲染。</p>
+                </div>
                 """
                 return html_content
+        
+        if safe_mode:
+            if cls.__safety_check(html_content) == False:
+                return """
+                <div class="errorMessage">
+                    <h1>Failed to render game content.</h1>
+                    <p>The game appears to contains HTML tags that could cause rendering errors. If you are the author, please make sure that your content is safe to render.</p>
+                    <br/>
+                    <p>這個遊戲包含會造成渲染錯誤的 HTML 元素。若您是作者，請確保您的內容是安全的。</p>
+                </div>
+                """
 
         if not resources:
             return html_content
         # 處理 HTML 內容中的資源標籤
         html = cls.__process_html_tags(html_content, resources, backend_url)
         return html
+    
 
     # 將 HTML 內容中的資源標籤替換為嵌入(js/css)或後端連結(img)
     @classmethod
@@ -123,3 +137,16 @@ class Renderer:
                     content = content.replace(match[0] or match[1], imported_content)
                     content = cls.__replace_js_imports(content, resources)  # 遞迴替換
         return content
+    
+
+    @staticmethod
+    def __safety_check(html_content: str):
+        # 檢查是否有危險的內容
+        # 這裡只是一個簡單的示例，實際上應該根據具體情況進行更嚴格的檢查
+        unsafe_tags = ['html', 'head', 'title', 'body', 'main', '!doctype']
+        html_content = html_content.lower()
+        for tag in unsafe_tags:
+            # 檢查是否有危險的標籤
+            if re.search(rf'<{tag}[^>]*>', html_content, re.IGNORECASE):
+                return False
+        return True
