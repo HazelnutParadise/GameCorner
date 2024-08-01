@@ -55,15 +55,17 @@ async def load_games_list(request: Request) -> list:
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
+# TODO: 前端做完後要改
 class GameData(BaseModel):
-    title: str
+    name: str
     description: str
     cover_image: str
-    game_file: str  
+    entry_file: str
+    game_files: str
 @app.post("/post_game_data")
 def post_game_data(game_data: GameData):
     try:
-        games.post_game_data(game_data.title, game_data.description, game_data.cover_image, game_data.game_file)
+        games.post_game_data(game_data.name, game_data.description, game_data.cover_image, game_data.entry_file, game_data.game_files)
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
