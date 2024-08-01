@@ -76,11 +76,12 @@ async def game_page(request: Request, game_id: int):
     if not game:
         return HTTPException(status_code=404, detail="Game not found.")
     
+    game_name = game.get("name")
     entry_file = game.get("entry_file")
     resources = game.get("game_files")
     resources_url = f"{Env.BACKEND_URL}/game/resource/{game_id}"
-    Renderer.render_html(entry_file, resources, backend_url=resources_url, only_render_between_GAME_tags=True)
-    return templates.TemplateResponse("game.html", {"request": request, "game": game})
+    rendered_game = Renderer.render_html(entry_file, resources, backend_url=resources_url, only_render_between_GAME_tags=True)
+    return templates.TemplateResponse("game.html", {"request": request, "game_title": game_name, "rendered_game": rendered_game})
 
 @app.get("/game/resource/{game_id}/{file_name}")
 async def game_resource(game_id: int, file_name: str):
