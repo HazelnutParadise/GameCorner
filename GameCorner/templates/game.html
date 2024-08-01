@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ game_title }} - 遊戲角落</title>
+    <title>{{ game_title }} - {{ site_name }}</title>
+    <link rel="icon" href="static/GameCorner.ico" type="image/x-icon" />
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
@@ -11,27 +12,30 @@
             font-family: 'Noto Sans TC', sans-serif;
         }
 
-        @keyframes shake {
+        #game-window {
+            overflow: hidden; /* 防止內容溢出 */
+            width: 100%;
+            height: 100%;
+            background-color: #fff;
+            margin: 0 auto;
+            border-radius: 8px;
+            color: #000;
+        }
 
-            0%,
-            100% {
-                transform: translateX(0);
-            }
+        .dynamic-font {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
 
-            10%,
-            30%,
-            50%,
-            70%,
-            90% {
-                transform: translateX(-10px);
-            }
-
-            20%,
-            40%,
-            60%,
-            80% {
-                transform: translateX(10px);
-            }
+        main{
+            background-color: #010c1e;
+            min-height: 86vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            padding: 0;
         }
     </style>
     <script>
@@ -50,14 +54,53 @@
     </script>
 </head>
 <body>
-    <div class="bg-gray-800 min-h-screen text-white">
-        <div class="w-full pt-3">
-            <a href="/" class="bg-white text-gray-800 px-6 py-3 rounded-full ml-8 flex items-center hover:bg-emerald-200 transition duration-300 ease-in-out text-lg md:text-xl font-semibold mx-4 my-2">
-                <i class="fas fa-chevron-left mr-2"></i>遊戲角落
+    <div class="bg-gray-800 min-h-screen text-white my-0">
+        <div class="w-full xl:px-48 pt-3 flex justify-between mb-2">
+            <a href="/" class="shrink-0 bg-white text-gray-800 px-6 py-2 rounded-full flex items-center hover:bg-emerald-200 transition duration-300 ease-in-out text-lg md:text-xl font-semibold mx-8 my-2">
+                <i class="fas fa-chevron-left mr-2"></i>{{ site_name }} <img src="{{site_logo}}" style="height: 30px;">
             </a>
+            <h1 id="game-title" class="dynamic-font md:text-3xl text-xl font-bold mr-8 pt-5 text-center">{{ game_title }}</h1>
         </div>
-        <h1 class="text-4xl md:text-5xl font-bold mb-8 pt-5 text-center">{{ game_title }}</h1>
-        <div>{{ rendered_game }}</div>
+        <main>
+            <div id="game-window">{{ rendered_game }}</div>
+        </main>
     </div>
+    <script>
+        function adjustGameContent() {
+            const gameWindow = document.getElementById('game-window');
+            const aspectRatio = window.innerHeight > window.innerWidth ? 3 / 4 : 16 / 9; // 根據螢幕比例選擇適當的遊戲比例
+            const maxHeight = window.innerHeight * 0.85; // 設置最大高度為視窗高度的85%
+            const width = gameWindow.offsetWidth;
+            let height = width / aspectRatio;
+
+            if (height > maxHeight) {
+                height = maxHeight;
+                gameWindow.style.width = `${height * aspectRatio}px`;
+            } else {
+                gameWindow.style.width = '100%';
+            }
+            gameWindow.style.height = `${height}px`;
+        }
+
+        function adjustFontSize() {
+            const gameTitle = document.getElementById('game-title');
+            const maxHeight = parseInt(window.getComputedStyle(gameTitle).maxHeight);
+            let fontSize = parseInt(window.getComputedStyle(gameTitle).fontSize);
+
+            while (gameTitle.scrollHeight > maxHeight && fontSize > 12) {
+                fontSize--;
+                gameTitle.style.fontSize = fontSize + 'px';
+            }
+        }
+
+        window.addEventListener('resize', () => {
+            adjustGameContent();
+            adjustFontSize();
+        });
+
+        // 初次加載時調整大小和字體
+        adjustGameContent();
+        adjustFontSize();
+    </script>
 </body>
 </html>

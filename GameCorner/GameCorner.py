@@ -20,7 +20,11 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # Create an instance of the Jinja2Templates class
 templates = Jinja2Templates(directory="templates")
-DEFAULT_TITLE = "遊戲角落 - 榛果繽紛樂"
+
+# Define constants
+SITE_NAME = "遊戲角落"
+DEFAULT_TITLE = f"{SITE_NAME} - 榛果繽紛樂"
+SITE_LOGO = f"data:image/png;base64,{utils.encode_local_image_to_base64('src/logo_resized.png')}"
 LOADER_IMG = f"data:image/png;base64,{utils.encode_local_image_to_base64('src/loader.png')}"
 
 # Define your routes and handlers here
@@ -81,7 +85,7 @@ async def game_page(request: Request, game_id: int):
     resources = game.get("game_files")
     resources_url = f"{Env.BACKEND_URL}/game/resource/{game_id}"
     rendered_game = Renderer.render_html(entry_file, resources, backend_url=resources_url, only_render_between_GAME_tags=True)
-    return templates.TemplateResponse("game.html", {"request": request, "game_title": game_name, "rendered_game": rendered_game})
+    return templates.TemplateResponse("game.html", {"request": request, "game_title": game_name, "site_name": SITE_NAME, "site_logo": SITE_LOGO, "rendered_game": rendered_game})
 
 @app.get("/game/resource/{game_id}/{file_name}")
 async def game_resource(game_id: int, file_name: str):
