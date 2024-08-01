@@ -10,3 +10,4 @@ class Env:
     DB_SQL_API = os.getenv("DB_SQL_API")
     DB_RECORD_API = os.getenv("DB_RECORD_API")
     USER_CHECK_LOGIN_API = os.getenv("USER_CHECK_LOGIN_API")
+    BACKEND_URL = os.getenv("BACKEND_URL")

@@ -11,6 +11,8 @@ from typing import Optional
 import games
 import users
 import utils
+import Renderer
+from load_env import Env
 
 # Create an instance of the FastAPI app
 app = FastAPI()
@@ -71,7 +73,12 @@ def update_game_data(game_data: GameData):
 @app.get("/game/{game_id}")
 async def game_page(request: Request, game_id: int):
     game = await games.get_game(game_id)
-    # TODO: 遊戲檔案渲染
+    if not game:
+        return HTTPException(status_code=404, detail="Game not found.")
+    
+    entry_file = game.get("entry_file")
+    resources = game.get("game_files")
+    Renderer.render_html(entry_file, resources, backend_url=Env.BACKEND_URL)
     return templates.TemplateResponse("game.html", {"request": request, "game": game})
 
 @app.get("/game/resource/{game_id}/{file_name}")
