@@ -1,225 +1,268 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{title}}</title>
-  <link rel="icon" href="static/GameCorner.ico" type="image/x-icon" />
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-  <script src="https://hazelnut-paradise.com/utils.js?"></script>
-  <style>
-    html,
-    body {
-      font-family: 'Noto Sans TC', sans-serif;
-      overflow-x: hidden;
-    }
-
-    @keyframes shake {
-
-      0%,
-      100% {
-        transform: translateX(0);
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{title}}</title>
+    <link rel="icon" href="static/GameCorner.ico" type="image/x-icon" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
+    <script src="https://hazelnut-paradise.com/utils.js?"></script>
+    <style>
+      html,
+      body {
+        font-family: "Noto Sans TC", sans-serif;
+        overflow-x: hidden;
       }
 
-      10%,
-      30%,
-      50%,
-      70%,
-      90% {
-        transform: translateX(-10px);
-      }
+      @keyframes shake {
+        0%,
+        100% {
+          transform: translateX(0);
+        }
 
-      20%,
-      40%,
-      60%,
-      80% {
-        transform: translateX(10px);
-      }
-    }
+        10%,
+        30%,
+        50%,
+        70%,
+        90% {
+          transform: translateX(-10px);
+        }
 
-    /* 在CSS中添加loader的樣式 */
-    @keyframes loader-animation {
-      0% {
-        transform: rotate(0deg) scale(0.6);
-      }
-
-      50% {
-        transform: rotate(360deg) scale(1.1);
-      }
-
-      100% {
-        transform: rotate(720deg) scale(0.6);
-      }
-    }
-
-    .loading-image {
-      animation: loader-animation 2s infinite;
-    }
-  </style>
-
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Noto Sans TC', 'sans-serif']
-          },
-          animation: {
-            shake: 'shake 0.5s cubic-bezier(.36,.07,.19,.97) both'
-          }
+        20%,
+        40%,
+        60%,
+        80% {
+          transform: translateX(10px);
         }
       }
-    }
-  </script>
-</head>
 
-<div id="navbar-placeholder"></div>
+      /* 在CSS中添加loader的樣式 */
+      @keyframes loader-animation {
+        0% {
+          transform: rotate(0deg) scale(0.6);
+        }
 
-<body>
-  <div id="app" class="bg-gray-800 min-h-screen text-white">
-    <div class="container mx-auto py-12 px-4">
-      <div class="flex flex-col sm:flex-row justify-between items-center mb-6">
+        50% {
+          transform: rotate(360deg) scale(1.1);
+        }
+
+        100% {
+          transform: rotate(720deg) scale(0.6);
+        }
+      }
+
+      .loading-image {
+        animation: loader-animation 2s infinite;
+      }
+    </style>
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Noto Sans TC", "sans-serif"],
+            },
+            animation: {
+              shake: "shake 0.5s cubic-bezier(.36,.07,.19,.97) both",
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+
+  <div id="navbar-placeholder"></div>
+
+  <body>
+    <div id="app" class="bg-gray-800 min-h-screen text-white">
+      <div class="container mx-auto py-12 px-4">
         <div
-          class="flex flex-col sm:flex-row justify-between items-center w-full border-b sm:border-b-0 border-gray-500 pb-4 sm:pb-0">
-          <h1 class="text-4xl md:text-5xl font-bold mb-8 sm:mb-0 text-center sm:text-start">遊戲角落<br>Game
-            Corner</h1>
-          <div class="flex flex-col items-center sm:items-end">
-            <div class="flex mb-4">
-              <a href="https://hazelnut-paradise.com/account/login?redirect=https%3A%2F%2Fgamecorner.hazelnut-paradise.com"
-                class="bg-white text-gray-800 px-4 py-2 rounded-full ml-2 hover:bg-emerald-200 transition duration-300 ease-in-out"
-                id="login-logout_button" style="display: none;">登入</a>
-              <a href="/achievements"
-                class="bg-white text-gray-800 px-4 py-2 rounded-full ml-2 flex items-center hover:bg-emerald-200 transition duration-300 ease-in-out"
-                id="myAchievements_button" style="display: none;">
-                <i class="fas fa-trophy mr-2"></i>我的成就
-              </a>
+          class="flex flex-col sm:flex-row justify-between items-center mb-6"
+        >
+          <div
+            class="flex flex-col sm:flex-row justify-between items-center w-full border-b sm:border-b-0 border-gray-500 pb-4 sm:pb-0"
+          >
+            <h1
+              class="text-4xl md:text-5xl font-bold mb-8 sm:mb-0 text-center sm:text-start"
+            >
+              遊戲角落<br />Game Corner
+            </h1>
+            <div class="flex flex-col items-center sm:items-end">
+              <div class="flex mb-4">
+                <a
+                  href="https://hazelnut-paradise.com/account/login?redirect=https%3A%2F%2Fgamecorner.hazelnut-paradise.com"
+                  class="bg-white text-gray-800 font-bold px-4 py-2 rounded-full ml-2 hover:bg-emerald-200 transition duration-300 ease-in-out"
+                  id="login-logout_button"
+                  >登入</a
+                >
+                <a
+                  href="/my-creation"
+                  class="bg-white text-gray-800 font-bold px-4 py-2 rounded-full ml-2 hover:bg-emerald-200 transition duration-300 ease-in-out"
+                  id="my-creation_button"
+                  >我的作品 </a
+                ><a
+                  href="/achievements"
+                  class="bg-white text-gray-800 px-4 py-2 rounded-full ml-2 flex items-center hover:bg-emerald-200 transition duration-300 ease-in-out"
+                  id="myAchievements_button"
+                  style="display: none;"
+                >
+                  <i class="fas fa-trophy mr-2"></i>我的成就
+                </a>
+              </div>
+              <div class="flex">
+                <a
+                  href="/play/{{ last_played_game }}"
+                  class="bg-white text-gray-800 px-4 py-2 rounded-full flex items-center hover:bg-emerald-200 transition duration-300 ease-in-out"
+                  id="playAgain_button"
+                  style="text-overflow: ellipsis; white-space: nowrap;overflow: hidden; width: 280px;display: none;"
+                >
+                  再次遊玩：{{ last_played_game }}
+                </a>
+              </div>
             </div>
-            <a href="/play/{{ last_played_game }}"
-              class="bg-white text-gray-800 px-4 py-2 rounded-full ml-3 flex items-center hover:bg-emerald-200 transition duration-300 ease-in-out"
-              id="playAgain_button" style="display: none;">
-              再次遊玩：{{ last_played_game }}
-            </a>
           </div>
         </div>
-      </div>
-      <p class="text-4xl mb-8 md:mb-12 text-center md:text-3xl lg:text-4xl md:mt-11">立即開始遊玩！</p>
-      <div id="games-container"
-        class="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 md:grid-cols-3 md:gap-4 lg:grid-cols-4 lg:gap-4">
-      </div>
-      <!-- 在HTML中添加一個新的div元素來顯示loader -->
-      <div id="loader" class="m-0 p-0 w-full h-auto flex items-center justify-center" style="display: flex;">
-        <img src="{{loader}}" alt="Loading..." class="loading-image" style="height: 300px;">
-      </div>
+        <p
+          class="text-4xl mb-8 md:mb-12 text-center md:text-3xl lg:text-4xl md:mt-11"
+        >
+          立即開始遊玩！
+        </p>
+        <div
+          id="games-container"
+          class="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 md:grid-cols-3 md:gap-4 lg:grid-cols-4 lg:gap-4"
+        ></div>
+        <!-- 在HTML中添加一個新的div元素來顯示loader -->
+        <div
+          id="loader"
+          class="m-0 p-0 w-full h-auto flex items-center justify-center"
+          style="display: flex"
+        >
+          <img
+            src="{{loader}}"
+            alt="Loading..."
+            class="loading-image"
+            style="height: 300px"
+          />
+        </div>
 
-      <div class="flex justify-center mt-8">
-        <button id="load-more-button"
-          class="mt-5 text-gray-800 bg-white px-4 py-2 rounded-full flex items-center justify-center hover:bg-emerald-200 transition duration-300 ease-in-out">
-          <i class="fas fa-chevron-down mr-2"></i>
-          查看更多
-        </button>
+        <div class="flex justify-center mt-8">
+          <button
+            id="load-more-button"
+            class="mt-5 text-gray-800 bg-white px-4 py-2 rounded-full flex items-center justify-center hover:bg-emerald-200 transition duration-300 ease-in-out"
+          >
+            <i class="fas fa-chevron-down mr-2"></i>
+            查看更多
+          </button>
+        </div>
       </div>
     </div>
-  </div>
-  <script>
-    let ifLoggedIn = false;
-    const LoginLogout_button = document.getElementById('login-logout_button');
+    <script>
+      let ifLoggedIn = false;
+      const LoginLogout_button = document.getElementById("login-logout_button");
 
-    getNavbar();
+      getNavbar();
 
-    (async () => {
-      ifLoggedIn = await check_login();
-      if (ifLoggedIn) {
-        LoginLogout_button.innerHTML = '登出';
-        document.getElementById('myAchievements_button').style.display = 'flex';
-        document.getElementById('playAgain_button').style.display = 'flex';
-      }
-      LoginLogout_button.style.display = 'flex';  
-    })();
-
-    LoginLogout_button.addEventListener('click', async () => {
-      // 禁用預設行為
-      event.preventDefault();
-      if (ifLoggedIn) {
-        const iflogout = await logout();
-        if (iflogout) {
-          alert = '登出成功！';
-          window.location.reload();
-        } else {
-          alert = '登出失敗！';
+      (async () => {
+        ifLoggedIn = await check_login();
+        if (ifLoggedIn) {
+          LoginLogout_button.innerHTML = "登出";
+          document.getElementById("myAchievements_button").style.display =
+            "flex";
+          document.getElementById("playAgain_button").style.display = "flex";
         }
-      } else {
-        window.location.href = 'https://hazelnut-paradise.com/account/login?redirect=https%3A%2F%2Fgamecorner.hazelnut-paradise.com';
+      })();
+
+      LoginLogout_button.addEventListener("click", async () => {
+        // 禁用預設行為
+        event.preventDefault();
+        if (ifLoggedIn) {
+          const iflogout = await logout();
+          if (iflogout) {
+            alert = "登出成功！";
+            window.location.reload();
+          } else {
+            alert = "登出失敗！";
+          }
+        } else {
+          window.location.href =
+            "https://hazelnut-paradise.com/account/login?redirect=https%3A%2F%2Fgamecorner.hazelnut-paradise.com";
+        }
+      });
+
+      // 載入遊戲列表
+      let skip = 0;
+      let limit = 4; // 默认值
+
+      function determineLimit() {
+        const screenWidth = document.body.clientWidth;
+        if (screenWidth > 1024) {
+          limit = 4;
+        } else if (screenWidth > 768) {
+          limit = 3;
+        } else {
+          limit = 4;
+        }
       }
-    });
 
-    // 載入遊戲列表
-    let skip = 0;
-    let limit = 4; // 默认值
-
-    function determineLimit() {
-      const screenWidth = document.body.clientWidth;
-      if (screenWidth > 1024) {
-        limit = 4;
-      } else if (screenWidth > 768) {
-        limit = 3;
-      } else {
-        limit = 4;
-      }
-    }
-
-    function loadGames() {
-      document.getElementById('loader').style.display = 'flex'; // 顯示loader
-      determineLimit();
-      fetch(`/load_games_list`, {
-        method: 'POST', // 指定请求方法为POST
-        headers: {
-          'Content-Type': 'application/json' // 指定发送到服务器的数据类型
-        },
-        body: JSON.stringify({ skip: skip, limit: limit }) // 将数据转换为JSON字符串
-      })
-        .then(response => response.json())
-        .then(games => {
-          const container = document.getElementById('games-container');
-          if (games.length > 0) {
-            games.forEach(game => {
-              const gameLink = document.createElement('a');
-              gameLink.className = "bg-emerald-100 text-gray-800 p-4 rounded-lg shadow-md hover:bg-blue-200 transform transition duration-300 ease-in-out hover:scale-125 hover:z-50 focus:outline-none focus:ring-2 focus:ring-opacity-50 focus:ring-gray-300";
-              gameLink.href = `/game/${encodeURIComponent(game.name)}`;
-              gameLink.innerHTML = `
+      function loadGames() {
+        document.getElementById("loader").style.display = "flex"; // 顯示loader
+        determineLimit();
+        fetch(`/load_games_list`, {
+          method: "POST", // 指定请求方法为POST
+          headers: {
+            "Content-Type": "application/json", // 指定发送到服务器的数据类型
+          },
+          body: JSON.stringify({ skip: skip, limit: limit }), // 将数据转换为JSON字符串
+        })
+          .then((response) => response.json())
+          .then((games) => {
+            const container = document.getElementById("games-container");
+            if (games.length > 0) {
+              games.forEach((game) => {
+                const gameLink = document.createElement("a");
+                gameLink.className =
+                  "bg-emerald-100 text-gray-800 p-4 rounded-lg shadow-md hover:bg-blue-200 transform transition duration-300 ease-in-out hover:scale-125 hover:z-50 focus:outline-none focus:ring-2 focus:ring-opacity-50 focus:ring-gray-300";
+                gameLink.href = `/game/${encodeURIComponent(game.name)}`;
+                gameLink.innerHTML = `
                             <h2 class="text-lg font-semibold mb-3">${game.title}</h2>
                             <p class="mb-6">${game.description}</p>
                             <div class="bg-gray-200 rounded flex items-center justify-center" style="overflow:hidden;height:150px">
                                 <img src="${game.cover_image}" alt="Cover Image" class="w-100 h-auto">
                             </div>`;
-              container.appendChild(gameLink);
-              document.getElementById('loader').style.display = 'none'; // 隱藏loader
-            });
-            skip += limit; // 更新skip值，为下一次加载准备
-          } else {
-            const load_more_button = document.getElementById('load-more-button');
-            load_more_button.innerText = '沒有更多了！'; // 更改加载更多按钮
-            load_more_button.className = "font-bold " + load_more_button.className;
-            load_more_button.disabled = true
-            load_more_button.style.cursor = 'not-allowed';
-            load_more_button.style.backgroundColor = 'white';
-            load_more_button.style.width = '500px';
-            document.getElementById('loader').style.display = 'none'; // 隱藏loader
-          }
+                container.appendChild(gameLink);
+                document.getElementById("loader").style.display = "none"; // 隱藏loader
+              });
+              skip += limit; // 更新skip值，为下一次加载准备
+            } else {
+              const load_more_button =
+                document.getElementById("load-more-button");
+              load_more_button.innerText = "沒有更多了！"; // 更改加载更多按钮
+              load_more_button.className =
+                "font-bold " + load_more_button.className;
+              load_more_button.disabled = true;
+              load_more_button.style.cursor = "not-allowed";
+              load_more_button.style.backgroundColor = "white";
+              load_more_button.style.width = "500px";
+              document.getElementById("loader").style.display = "none"; // 隱藏loader
+            }
+          })
+          .catch((error) => {
+            console.error("Error loading games:", error);
+            document.getElementById("loader").style.display = "none"; // 隱藏loader
+          });
+      }
 
-        })
-        .catch(error => {
-          console.error('Error loading games:', error)
-          document.getElementById('loader').style.display = 'none'; // 隱藏loader
-        });
-    }
+      document
+        .getElementById("load-more-button")
+        .addEventListener("click", loadGames);
 
-    document.getElementById('load-more-button').addEventListener('click', loadGames);
-
-    // 初始化加载
-    loadGames();
-  </script>
-</body>
-
+      // 初始化加载
+      loadGames();
+    </script>
+  </body>
 </html>
