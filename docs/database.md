@@ -8,6 +8,7 @@ tables['Games'] = [{
     'id' : 'INTEGER PRIMARY KEY AUTOINCREMENT',
     'name':'TEXT',
     'description': 'TEXT',
+    'author_id': 'TEXT',
     'cover_image': 'BLOB',
     'entry_file': 'BLOB',  # the entry file of a game (HTML)  # 遊戲的進入點 (HTML)
     'game_files': 'BLOB',  # other game files (.js, .css, etc), not including the entry file.
@@ -15,6 +16,7 @@ tables['Games'] = [{
     'highest_score': 'REAL DEFAULT 0',
     'achievement_holder': 'TEXT'
 }, {
+    'author_id': 'Users(uuid)',
     'achievement_holder': 'Users(uuid)'  # FK
 }]
 ```
