@@ -15,7 +15,7 @@ from Renderer import Renderer
 from load_env import Env
 
 # Create an instance of the FastAPI app
-app = FastAPI()
+app = FastAPI(docs_url=None, redoc_url=None)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # Create an instance of the Jinja2Templates class
