@@ -123,7 +123,7 @@ async def game_page(request: Request, game_id: int):
 
 @app.delete("/game/{game_id}")
 def delete_game(request: Request, game_id: int):
-    if not request.session['verified_login']:
+    if not request.session.get('verified_login'):
         raise HTTPException(status_code=401, detail="Unauthorized")
     err = games.delete_game(game_id)
     if err:
