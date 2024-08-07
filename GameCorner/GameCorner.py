@@ -59,7 +59,6 @@ async def load_games_list(request: Request) -> list:
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-# TODO: 前端做完後要改
 # TODO: 前端表單加上author_id
 @app.post("/game")
 async def post_game_data(
@@ -73,8 +72,11 @@ async def post_game_data(
     if not session.verified_login:
         raise HTTPException(status_code=401, detail="Unauthorized")
     cover_image = cover_image.read()
-    entry_file = entry_file.read()
+    entry_file = entry_file.read().decode("utf-8")
     game_files = {file.filename: file.read() for file in game_files}
+    for key, value in game_files.items():
+        if key.endswith(".html") or key.endswith(".*js") or key.endswith(".css"):
+            game_files[key] = value.decode("utf-8")
     err = await games.post_game_data(name, description, author_id, cover_image, entry_file, game_files)
     if err:
         raise HTTPException(status_code=400, detail=err)
@@ -91,8 +93,11 @@ def update_game_data(
     if not session.verified_login:
         raise HTTPException(status_code=401, detail="Unauthorized")
     cover_image = cover_image.read()
-    entry_file = entry_file.read()
+    entry_file = entry_file.read().decode("utf-8")
     game_files = {file.filename: file.read() for file in game_files}
+    for key, value in game_files.items():
+        if key.endswith(".html") or key.endswith(".*js") or key.endswith(".css"):
+            game_files[key] = value.decode("utf-8")
     err = games.update_game_data(game_id, name, description, cover_image, entry_file, game_files)
     if err:
         raise HTTPException(status_code=400, detail=err)
@@ -102,7 +107,6 @@ async def game_page(request: Request, game_id: int):
     game = await games.get_game(game_id)
     if not game:
         return HTTPException(status_code=404, detail="Game not found.")
-    
     game_name = game.get("name")
     entry_file = game.get("entry_file")
     resources = game.get("game_files")

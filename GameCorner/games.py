@@ -21,13 +21,15 @@ def get_game_list(skip: int = 0, limit: int = 4) -> list:
         })
     )
     games = result.json()
+
     # games 是一個列表，每個元素是一個字典，代表一個遊戲
     # [
     # {
     #     'id': 1,
     #     'name': '遊戲1',
     #     'description': '這是遊戲1的描述',
-    #     'cover_image': 'data:image/png;base64,xxxxxx'
+    #     'cover_image': 'data:image/png;base64,xxxxxx',
+    #     TODO: 'author': 'name',
     # },
     # ...
     # ]
