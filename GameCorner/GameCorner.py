@@ -99,6 +99,15 @@ async def game_page(request: Request, game_id: int):
     rendered_game = Renderer.render_html(entry_file, resources, backend_url=resources_url, only_render_between_GAME_tags=True)
     return templates.TemplateResponse("game.html", {"request": request, "game_title": game_name, "site_name": SITE_NAME, "site_logo": SITE_LOGO, "rendered_game": rendered_game})
 
+@app.delete("/game/{game_id}")
+def delete_game(game_id: int):
+    if not session.verified_login:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+    try:
+        games.delete_game(game_id) # TODO: 完成 delete_game 方法
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
 @app.get("/game/resource/{game_id}/{file_name}")
 async def game_resource(game_id: int, file_name: str):
     return await games.get_game_resource(game_id, file_name)

@@ -340,9 +340,12 @@
         function closeModal(modal) {
           document.getElementById(modal).classList.add("hidden");
         }
-        function confirmDeleteGame() {
+        async function confirmDeleteGame() {
           // 在這裡添加刪除遊戲的邏輯
           closeModal("delete-game-modal");
+          const result = await fetch(`/game/${gameId}`, {
+            method: "DELETE",
+          });
         }
 
         function deleteGame(gameId) {
