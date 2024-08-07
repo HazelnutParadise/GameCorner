@@ -62,7 +62,7 @@ async def load_games_list(request: Request) -> list:
 # TODO: 前端做完後要改
 # TODO: 前端表單加上author_id
 @app.post("/game")
-def post_game_data(
+async def post_game_data(
     name: str = Form(...),
     description: str = Form(...),
     author_id: str = Form(...),
@@ -72,7 +72,10 @@ def post_game_data(
 ):
     if not session.verified_login:
         raise HTTPException(status_code=401, detail="Unauthorized")
-    err = games.post_game_data(name, description, author_id, cover_image, entry_file, game_files)
+    cover_image = cover_image.read()
+    entry_file = entry_file.read()
+    game_files = {file.filename: file.read() for file in game_files}
+    err = await games.post_game_data(name, description, author_id, cover_image, entry_file, game_files)
     if err:
         raise HTTPException(status_code=400, detail=err)
 
@@ -87,6 +90,9 @@ def update_game_data(
 ):
     if not session.verified_login:
         raise HTTPException(status_code=401, detail="Unauthorized")
+    cover_image = cover_image.read()
+    entry_file = entry_file.read()
+    game_files = {file.filename: file.read() for file in game_files}
     err = games.update_game_data(game_id, name, description, cover_image, entry_file, game_files)
     if err:
         raise HTTPException(status_code=400, detail=err)
@@ -100,7 +106,7 @@ async def game_page(request: Request, game_id: int):
     game_name = game.get("name")
     entry_file = game.get("entry_file")
     resources = game.get("game_files")
-    resources_url = f"{Env.BACKEND_URL}/game/resource/{game_id}"
+    resources_url = f"/game/resource/{game_id}"
     rendered_game = Renderer.render_html(entry_file, resources, backend_url=resources_url, only_render_between_GAME_tags=True)
     return templates.TemplateResponse("game.html", {"request": request, "game_title": game_name, "site_name": SITE_NAME, "site_logo": SITE_LOGO, "rendered_game": rendered_game})
 
