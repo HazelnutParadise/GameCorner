@@ -1,9 +1,12 @@
 #################### GameCorner.py ####################
 #################### 程式進入點 ####################
 import asyncio
+import random
+import secrets
 from pydantic import BaseModel
 import uvicorn
-from fastapi import Body, FastAPI, File, Form, Request, HTTPException, UploadFile, requests
+from fastapi import Body, FastAPI, File, Form, Request, HTTPException, UploadFile
+from starlette.middleware.sessions import SessionMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from typing import Optional
@@ -16,8 +19,10 @@ from load_env import Env
 
 # Create an instance of the FastAPI app
 app = FastAPI(docs_url=None, redoc_url=None)
-session = requests.Session()
-session.verified_login = False
+key_length = random.randint(32, 64)
+SECRET_KEY = secrets.token_urlsafe(key_length)
+app.add_middleware(SessionMiddleware, secret_key=SECRET_KEY)
+
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # Create an instance of the Jinja2Templates class
@@ -37,12 +42,12 @@ async def home(request: Request):
     return templates.TemplateResponse("index.html", {"request": request, "title": title, "loader": LOADER_IMG})
 
 @app.post("/check_login_cookie")
-async def check_login_cookie(cookie: dict = Body(...)) -> bool:
+async def check_login_cookie(request: Request, cookie: dict = Body(...)) -> bool:
     if cookie:
         if await users.check_login(cookie=cookie):
-            session.verified_login = True
+            request.session['verified_login'] = True
             return True
-    session.verified_login = False
+    request.session['verified_login'] = False
     return False
 
 @app.post("/load_games_list")
@@ -62,6 +67,7 @@ async def load_games_list(request: Request) -> list:
 # TODO: 前端表單加上author_id
 @app.post("/game")
 async def post_game_data(
+    request: Request,
     name: str = Form(...),
     description: str = Form(...),
     author_id: str = Form(...),
@@ -69,7 +75,7 @@ async def post_game_data(
     entry_file: UploadFile = File(...),
     game_files: list[UploadFile] = File(...)
 ):
-    if not session.verified_login:
+    if not request.session['verified_login']:
         raise HTTPException(status_code=401, detail="Unauthorized")
     cover_image = cover_image.read()
     entry_file = entry_file.read().decode("utf-8")
@@ -83,6 +89,7 @@ async def post_game_data(
 
 @app.put("/game/{game_id}")
 def update_game_data(
+    request: Request,
     game_id: int,
     name: str = Form(...),
     description: str = Form(...),
@@ -90,7 +97,7 @@ def update_game_data(
     entry_file: UploadFile = File(...),
     game_files: list[UploadFile] = File(...)
 ):
-    if not session.verified_login:
+    if not request.session['verified_login']:
         raise HTTPException(status_code=401, detail="Unauthorized")
     cover_image = cover_image.read()
     entry_file = entry_file.read().decode("utf-8")
@@ -115,8 +122,8 @@ async def game_page(request: Request, game_id: int):
     return templates.TemplateResponse("game.html", {"request": request, "game_title": game_name, "site_name": SITE_NAME, "site_logo": SITE_LOGO, "rendered_game": rendered_game})
 
 @app.delete("/game/{game_id}")
-def delete_game(game_id: int):
-    if not session.verified_login:
+def delete_game(request: Request, game_id: int):
+    if not request.session['verified_login']:
         raise HTTPException(status_code=401, detail="Unauthorized")
     err = games.delete_game(game_id)
     if err:
