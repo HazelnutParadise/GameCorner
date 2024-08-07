@@ -23,7 +23,8 @@ GameCorner/
 │         # 您的環境變數檔（我們沒有提供，但它應該放在這裡）
 ├── templates/  # HTML templates  # HTML 模板
 │    ├── index.html  # home page  # 首頁
-│    └── game.html  # game page for each game  # 個別遊戲的遊戲頁面
+│    ├── game.html  # game page for each game  # 個別遊戲的遊戲頁面
+│    └── myCreation.html  # page for game developers to manage their games  # 讓遊戲開發者管理遊戲的頁面
 ├── static/  # static resources  # 靜態資源
 │    └── GameCorner.ico  # Favicon
 └── src/  # the place for images or something else  # 放圖片和其他東西的地方
