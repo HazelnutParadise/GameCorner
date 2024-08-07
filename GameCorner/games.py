@@ -61,14 +61,13 @@ async def get_game_resource(id: int, file_name: str) -> bytes | None:
             return None
 
 # TODO: 上傳遊戲到資料庫
+# TODO: 將game_files處理為 {file_name(str): file_content(base64)} 的形式
 # 本函數內容不正確
 def post_game_data(title, description, author_id, cover_image, entry_file,  game_files) -> None | str:
     entry_file = utils.encode_base64(entry_file)
 
     # TODO: cover_image 需先處理為 bytes 的形式
     cover_image = utils.encode_base64(cover_image)
-
-    # TODO: game_files 需先處理為 {file_name(str): file_content(base64)} 的形式
 
     game_data: dict = {
         "name": title,
@@ -94,6 +93,7 @@ def post_game_data(title, description, author_id, cover_image, entry_file,  game
 
 
 # 更新現有遊戲到資料庫
+# TODO: 同上
 def update_game_data(id, name=None, description=None, cover_image=None, entry_file=None, game_files=None) -> None | str:
     game_data: dict = {
         "name": name,

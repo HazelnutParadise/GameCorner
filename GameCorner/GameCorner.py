@@ -3,7 +3,7 @@
 import asyncio
 from pydantic import BaseModel
 import uvicorn
-from fastapi import Body, FastAPI, Request, HTTPException, requests
+from fastapi import Body, FastAPI, File, Form, Request, HTTPException, UploadFile, requests
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from typing import Optional
@@ -60,27 +60,34 @@ async def load_games_list(request: Request) -> list:
         raise HTTPException(status_code=400, detail=str(e))
 
 # TODO: 前端做完後要改
-class GameData(BaseModel):
-    id: Optional[int] = None
-    name: str
-    description: str
-    author_id: str
-    cover_image: str
-    entry_file: str
-    game_files: str
-@app.post("/post_game_data")
-def post_game_data(game_data: GameData):
+# TODO: 前端表單加上author_id
+@app.post("/game")
+def post_game_data(
+    name: str = Form(...),
+    description: str = Form(...),
+    author_id: str = Form(...),
+    cover_image: UploadFile = File(...),
+    entry_file: UploadFile = File(...),
+    game_files: list[UploadFile] = File(...)
+):
     if not session.verified_login:
         raise HTTPException(status_code=401, detail="Unauthorized")
-    err = games.post_game_data(game_data.name, game_data.description, game_data.author_id, game_data.cover_image, game_data.entry_file, game_data.game_files)
+    err = games.post_game_data(name, description, author_id, cover_image, entry_file, game_files)
     if err:
         raise HTTPException(status_code=400, detail=err)
 
-@app.post("/update_game_data")
-def update_game_data(game_data: GameData):
+@app.put("/game/{game_id}")
+def update_game_data(
+    game_id: int,
+    name: str = Form(...),
+    description: str = Form(...),
+    cover_image: UploadFile = File(...),
+    entry_file: UploadFile = File(...),
+    game_files: list[UploadFile] = File(...)
+):
     if not session.verified_login:
         raise HTTPException(status_code=401, detail="Unauthorized")
-    err = games.update_game_data(game_data.id, game_data.name, game_data.description, game_data.cover_image, game_data.entry_file, game_data.game_files)
+    err = games.update_game_data(game_id, name, description, cover_image, entry_file, game_files)
     if err:
         raise HTTPException(status_code=400, detail=err)
 

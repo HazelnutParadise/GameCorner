@@ -180,7 +180,7 @@
             <input
               type="file"
               id="image"
-              name="image"
+              name="cover_image"
               class="block w-full p-2 bg-input text-input-foreground rounded-lg focus:ring-primary transition duration-300 ease-in-out"
             />
             <label for="entry-file" class="block text-md font-black mb-2 mt-5"
@@ -189,7 +189,7 @@
             <input
               type="file"
               id="entry-file"
-              name="file"
+              name="entry_file"
               class="block w-full p-2 bg-input text-input-foreground rounded-lg focus:ring-primary transition duration-300 ease-in-out"
               required
             />
@@ -199,7 +199,7 @@
             <input
               type="file"
               id="game-files"
-              name="game-files"
+              name="game_files"
               class="block w-full p-2 bg-input text-input-foreground rounded-lg focus:ring-primary transition duration-300 ease-in-out"
               multiple
             />
@@ -257,7 +257,7 @@
             <input
               type="file"
               id="edit-image"
-              name="image"
+              name="cover_image"
               class="block w-full p-2 bg-input text-input-foreground rounded-lg focus:ring-primary transition duration-300 ease-in-out"
             />
             <label
@@ -268,7 +268,7 @@
             <input
               type="file"
               id="edit-entry-file"
-              name="file"
+              name="entry_file"
               class="block w-full p-2 bg-input text-input-foreground rounded-lg focus:ring-primary transition duration-300 ease-in-out"
               required
             />
@@ -280,7 +280,7 @@
             <input
               type="file"
               id="edit-game-files"
-              name="game-files"
+              name="game_files"
               class="block w-full p-2 bg-input text-input-foreground rounded-lg focus:ring-primary transition duration-300 ease-in-out"
               multiple
             />
@@ -378,9 +378,20 @@
             });
           });
 
-          
-          editSubmitBtn.addEventListener("click", function () {
-            // TODO: 編輯遊戲
+          editSubmitBtn.addEventListener("click", async function () {
+            const gameId =
+              document.getElementById("edit-game-modal").dataset.gameId;
+            const result = await fetch(`/game/${gameId}`, {
+              method: "PUT",
+              body: new FormData(editGameForm),
+            });
+            if (result.ok) {
+              alert("遊戲已更新");
+              editGameForm.reset();
+              window.location.reload();
+            } else {
+              alert("更新失敗");
+            }
           });
           editCancelBtn.addEventListener("click", function () {
             // 清空表單
@@ -388,8 +399,19 @@
             closeModal("edit-game-modal");
           });
 
-          addSubmitBtn.addEventListener("click", function () {
-            // TODO: 新增遊戲
+          addSubmitBtn.addEventListener("click", async function () {
+            const formData = new FormData(addGameForm);
+            result = await fetch("/game", {
+              method: "POST",
+              body: formData,
+            });
+            if (result.ok) {
+              alert("遊戲已新增");
+              addGameForm.reset();
+              window.location.reload();
+            } else {
+              alert("新增失敗");
+            }
           });
 
           addCancelBtn.addEventListener("click", function () {
