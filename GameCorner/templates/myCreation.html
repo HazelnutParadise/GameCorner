@@ -346,11 +346,10 @@
           const result = await fetch(`/game/${gameId}`, {
             method: "DELETE",
           });
-        }
-
-        function deleteGame(gameId) {
-          console.log(`Deleting game with ID: ${gameId}`);
-          // 在這裡添加刪除遊戲的邏輯
+          if (result.ok) {
+            alert("遊戲已刪除");
+            window.location.reload();
+          }
         }
 
         document.addEventListener("DOMContentLoaded", function () {

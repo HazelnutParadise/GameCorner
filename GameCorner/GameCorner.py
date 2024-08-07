@@ -104,6 +104,7 @@ def delete_game(game_id: int):
     err = games.delete_game(game_id)
     if err:
         raise HTTPException(status_code=400, detail=err)
+    return HTTPException(status_code=200, detail="Game deleted successfully.")
 
 @app.get("/game/resource/{game_id}/{file_name}")
 async def game_resource(game_id: int, file_name: str):
