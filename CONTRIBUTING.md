@@ -39,3 +39,8 @@ See documents in "[docs](./docs)" folder to learn more about this project.<br/>
 - [x] Load game files through database API. 透過資料庫的 API 讀取遊戲檔案。
 - [x] The game page. 遊戲頁面。
 - [ ] A page for game producers to manage games and upload game files. 遊戲檔案的管理和上傳頁面。
+  - [ ] 前後端資料串接
+    - [ ] 查詢
+    - [ ] 上傳
+    - [ ] 更新
+    - [x] 刪除
