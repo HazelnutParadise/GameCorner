@@ -72,19 +72,17 @@ class GameData(BaseModel):
 def post_game_data(game_data: GameData):
     if not session.verified_login:
         raise HTTPException(status_code=401, detail="Unauthorized")
-    try:
-        games.post_game_data(game_data.name, game_data.description, game_data.author_id, game_data.cover_image, game_data.entry_file, game_data.game_files)
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+    err = games.post_game_data(game_data.name, game_data.description, game_data.author_id, game_data.cover_image, game_data.entry_file, game_data.game_files)
+    if err:
+        raise HTTPException(status_code=400, detail=err)
 
 @app.post("/update_game_data")
 def update_game_data(game_data: GameData):
     if not session.verified_login:
         raise HTTPException(status_code=401, detail="Unauthorized")
-    try:
-        games.update_game_data(game_data.id, game_data.name, game_data.description, game_data.cover_image, game_data.entry_file, game_data.game_files)
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+    err = games.update_game_data(game_data.id, game_data.name, game_data.description, game_data.cover_image, game_data.entry_file, game_data.game_files)
+    if err:
+        raise HTTPException(status_code=400, detail=err)
 
 @app.get("/game/{game_id}")
 async def game_page(request: Request, game_id: int):
@@ -103,10 +101,9 @@ async def game_page(request: Request, game_id: int):
 def delete_game(game_id: int):
     if not session.verified_login:
         raise HTTPException(status_code=401, detail="Unauthorized")
-    try:
-        games.delete_game(game_id) # TODO: 完成 delete_game 方法
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+    err = games.delete_game(game_id)
+    if err:
+        raise HTTPException(status_code=400, detail=err)
 
 @app.get("/game/resource/{game_id}/{file_name}")
 async def game_resource(game_id: int, file_name: str):
