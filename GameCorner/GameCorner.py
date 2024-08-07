@@ -75,7 +75,7 @@ async def post_game_data(
     entry_file: UploadFile = File(...),
     game_files: list[UploadFile] = File(...)
 ):
-    if not request.session['verified_login']:
+    if not request.session.get('verified_login'):
         raise HTTPException(status_code=401, detail="Unauthorized")
     cover_image = cover_image.read()
     entry_file = entry_file.read().decode("utf-8")
@@ -97,7 +97,7 @@ def update_game_data(
     entry_file: UploadFile = File(...),
     game_files: list[UploadFile] = File(...)
 ):
-    if not request.session['verified_login']:
+    if not request.session.get('verified_login'):
         raise HTTPException(status_code=401, detail="Unauthorized")
     cover_image = cover_image.read()
     entry_file = entry_file.read().decode("utf-8")
