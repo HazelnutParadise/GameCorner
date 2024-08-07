@@ -16,6 +16,8 @@ from load_env import Env
 
 # Create an instance of the FastAPI app
 app = FastAPI(docs_url=None, redoc_url=None)
+session = requests.Session()
+session.verified_login = False
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # Create an instance of the Jinja2Templates class
@@ -37,9 +39,11 @@ async def home(request: Request):
 @app.post("/check_login_cookie")
 async def check_login_cookie(cookie: dict = Body(...)) -> bool:
     if cookie:
-        return await users.check_login(cookie=cookie)
-    else:
-        return False
+        if await users.check_login(cookie=cookie):
+            session.verified_login = True
+            return True
+    session.verified_login = False
+    return False
 
 @app.post("/load_games_list")
 async def load_games_list(request: Request) -> list:
@@ -66,6 +70,8 @@ class GameData(BaseModel):
     game_files: str
 @app.post("/post_game_data")
 def post_game_data(game_data: GameData):
+    if not session.verified_login:
+        raise HTTPException(status_code=401, detail="Unauthorized")
     try:
         games.post_game_data(game_data.name, game_data.description, game_data.author_id, game_data.cover_image, game_data.entry_file, game_data.game_files)
     except Exception as e:
@@ -73,6 +79,8 @@ def post_game_data(game_data: GameData):
 
 @app.post("/update_game_data")
 def update_game_data(game_data: GameData):
+    if not session.verified_login:
+        raise HTTPException(status_code=401, detail="Unauthorized")
     try:
         games.update_game_data(game_data.id, game_data.name, game_data.description, game_data.cover_image, game_data.entry_file, game_data.game_files)
     except Exception as e:
