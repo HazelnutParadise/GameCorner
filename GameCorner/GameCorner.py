@@ -41,6 +41,11 @@ async def home(request: Request):
     title = DEFAULT_TITLE
     return templates.TemplateResponse("index.html", {"request": request, "title": title, "loader": LOADER_IMG})
 
+app.get("/my-creation")
+async def my_creation(request: Request):
+    # TODO
+    return templates.TemplateResponse("my-creation.html", {"request": request, "title": "我的創作", "loader": LOADER_IMG})
+
 @app.post("/check_login_cookie")
 async def check_login_cookie(request: Request, cookie: dict = Body(...)) -> bool:
     if cookie:
