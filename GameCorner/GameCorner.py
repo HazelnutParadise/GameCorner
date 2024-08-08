@@ -72,7 +72,6 @@ async def load_games_list(request: Request) -> list:
 @app.post("/game")
 async def post_game_data(
     request: Request,
-    cookie: dict = Body(...),
     name: str = Form(...),
     description: str = Form(...),
     cover_image: UploadFile = File(...),
@@ -81,6 +80,7 @@ async def post_game_data(
 ):
     if not request.session.get('verified_login'):
         raise HTTPException(status_code=401, detail="Unauthorized")
+    cookie = request.cookies.get('AllSitesLoggedIn')
     author_id = await users.get_user_uuid(cookie)
     cover_image = await cover_image.read()
     entry_file = await entry_file.read()
