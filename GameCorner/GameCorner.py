@@ -31,8 +31,8 @@ templates = Jinja2Templates(directory="templates")
 # Define constants
 SITE_NAME = "遊戲角落"
 DEFAULT_TITLE = f"{SITE_NAME} - 榛果繽紛樂"
-SITE_LOGO = f"data:image/png;base64,{utils.encode_local_image_to_base64('src/logo_resized.png')}"
-LOADER_IMG = f"data:image/png;base64,{utils.encode_local_image_to_base64('src/loader.png')}"
+SITE_LOGO = f"data:image/png;base64, {utils.encode_local_image_to_base64('src/logo_resized.png')}"
+LOADER_IMG = f"data:image/png;base64, {utils.encode_local_image_to_base64('src/loader.png')}"
 
 # Define your routes and handlers here
 
@@ -41,10 +41,10 @@ async def home(request: Request):
     title = DEFAULT_TITLE
     return templates.TemplateResponse("index.html", {"request": request, "title": title, "loader": LOADER_IMG})
 
-app.get("/my-creation")
+@app.get("/my-creation")
 async def my_creation(request: Request):
     # TODO
-    return templates.TemplateResponse("my-creation.html", {"request": request, "title": "我的創作", "loader": LOADER_IMG})
+    return templates.TemplateResponse("myCreation.html", {"request": request, "title": "我的創作", "site_logo": SITE_LOGO, "site_name": SITE_NAME})
 
 @app.post("/check_login_cookie")
 async def check_login_cookie(request: Request, cookie: dict = Body(...)) -> bool:

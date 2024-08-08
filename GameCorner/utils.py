@@ -10,14 +10,13 @@ def encode_local_image_to_base64(image_path: str) -> str:
 
 
 # 編碼為 Base64
-def encode_base64(content: bytes | str) -> base64:
-    return base64.b64encode(content.encode('utf-8')).decode('utf-8')
+def encode_base64(content: bytes) -> str:
+    return base64.b64encode(content).decode()
 
 
 # 解碼 Base64
-def decode_base64(content: base64) -> str | bytes:
-    return base64.b64decode(content).decode('utf-8')
-
+def decode_base64(content: str) -> bytes:
+    return base64.b64decode(content)
 
 # 清理路徑
 def clean_path(path):
