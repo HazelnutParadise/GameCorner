@@ -20,7 +20,8 @@ from load_env import Env
 # Create an instance of the FastAPI app
 app = FastAPI(docs_url=None, redoc_url=None)
 key_length = random.randint(32, 64)
-SECRET_KEY = secrets.token_urlsafe(key_length)
+SECRET_KEY = "123"
+
 app.add_middleware(SessionMiddleware, secret_key=SECRET_KEY)
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -46,14 +47,17 @@ async def my_creation(request: Request):
     # TODO
     return templates.TemplateResponse("myCreation.html", {"request": request, "title": "我的創作", "site_logo": SITE_LOGO, "site_name": SITE_NAME})
 
-@app.post("/check_login_cookie")
-async def check_login_cookie(request: Request, cookie: dict = Body(...)) -> bool:
-    if cookie:
-        if await users.check_login(cookie=cookie):
-            request.session['verified_login'] = True
-            return True
-    request.session['verified_login'] = False
-    return False
+@app.post("/set_login_session/{if_login}")
+async def check_login_cookie(request: Request) -> bool:
+    if_login = request.path_params['if_login']
+    if if_login == 'login':
+        request.session['verified_login'] = True
+        # request.session['cookie'] = cookie
+    elif if_login == 'logout':
+        request.session['verified_login'] = False
+        request.session['cookie'] = None
+    print(request.session.get('verified_login'))
+    print(request.session.get('cookie'))
 
 @app.post("/load_games_list")
 async def load_games_list(request: Request) -> list:
@@ -78,9 +82,12 @@ async def post_game_data(
     entry_file: UploadFile = File(...),
     game_files: list[UploadFile] = File(...)
 ):
+    print(name, description, cover_image, entry_file, game_files)
+    print(request.session.get('verified_login'))
+    print(request.session.get('cookie'))
     if not request.session.get('verified_login'):
         raise HTTPException(status_code=401, detail="Unauthorized")
-    cookie = request.cookies.get('AllSitesLoggedIn')
+    cookie = request.session.get('cookie')
     author_id = await users.get_user_uuid(cookie)
     cover_image = await cover_image.read()
     entry_file = await entry_file.read()

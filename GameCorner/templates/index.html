@@ -170,6 +170,12 @@
       (async () => {
         ifLoggedIn = await check_login();
         if (ifLoggedIn) {
+          await fetch("/set_login_session/login", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
           LoginLogout_button.innerHTML = "登出";
           document.getElementById("myAchievements_button").style.display =
             "flex";
@@ -183,7 +189,12 @@
         if (ifLoggedIn) {
           const iflogout = await logout();
           if (iflogout) {
-            alert = "登出成功！";
+            await fetch("/set_login_session/logout", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            });
             window.location.reload();
           } else {
             alert = "登出失敗！";

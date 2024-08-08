@@ -345,6 +345,7 @@
           // 在這裡添加刪除遊戲的邏輯
           closeModal("delete-game-modal");
           const result = await fetch(`/game/${gameId}`, {
+            credentials: 'include',
             method: "DELETE",
           });
           if (result.ok) {
@@ -384,6 +385,7 @@
               document.getElementById("edit-game-modal").dataset.gameId;
             const result = await fetch(`/game/${gameId}`, {
               method: "PUT",
+              credentials: 'include',
               body: new FormData(editGameForm),
             });
             if (result.ok) {
@@ -404,6 +406,7 @@
             const formData = new FormData(addGameForm);
             result = await fetch("/game", {
               method: "POST",
+              credentials: 'include',
               body: formData,
             });
             if (result.ok) {
