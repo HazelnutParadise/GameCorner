@@ -19,10 +19,6 @@ from load_env import Env
 
 # Create an instance of the FastAPI app
 app = FastAPI(docs_url=None, redoc_url=None)
-key_length = random.randint(32, 64)
-SECRET_KEY = "123"
-
-app.add_middleware(SessionMiddleware, secret_key=SECRET_KEY)
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
@@ -46,18 +42,6 @@ async def home(request: Request):
 async def my_creation(request: Request):
     # TODO
     return templates.TemplateResponse("myCreation.html", {"request": request, "title": "我的創作", "site_logo": SITE_LOGO, "site_name": SITE_NAME})
-
-@app.post("/set_login_session/{if_login}")
-async def check_login_cookie(request: Request) -> bool:
-    if_login = request.path_params['if_login']
-    if if_login == 'login':
-        request.session['verified_login'] = True
-        # request.session['cookie'] = cookie
-    elif if_login == 'logout':
-        request.session['verified_login'] = False
-        request.session['cookie'] = None
-    print(request.session.get('verified_login'))
-    print(request.session.get('cookie'))
 
 @app.post("/load_games_list")
 async def load_games_list(request: Request) -> list:
@@ -83,12 +67,6 @@ async def post_game_data(
     game_files: list[UploadFile] = File(...)
 ):
     print(name, description, cover_image, entry_file, game_files)
-    print(request.session.get('verified_login'))
-    print(request.session.get('cookie'))
-    if not request.session.get('verified_login'):
-        raise HTTPException(status_code=401, detail="Unauthorized")
-    cookie = request.session.get('cookie')
-    author_id = await users.get_user_uuid(cookie)
     cover_image = await cover_image.read()
     entry_file = await entry_file.read()
     entry_file = entry_file.decode("utf-8")
@@ -110,8 +88,6 @@ async def update_game_data(
     entry_file: UploadFile = File(...),
     game_files: list[UploadFile] = File(...)
 ):
-    if not request.session.get('verified_login'):
-        raise HTTPException(status_code=401, detail="Unauthorized")
     cover_image = await cover_image.read()
     entry_file = await entry_file.read()
     entry_file = entry_file.decode("utf-8")
