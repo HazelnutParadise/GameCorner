@@ -69,21 +69,22 @@ async def load_games_list(request: Request) -> list:
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-# TODO: 前端表單加上author_id
 @app.post("/game")
 async def post_game_data(
     request: Request,
+    cookie: dict = Body(...),
     name: str = Form(...),
     description: str = Form(...),
-    author_id: str = Form(...),
     cover_image: UploadFile = File(...),
     entry_file: UploadFile = File(...),
     game_files: list[UploadFile] = File(...)
 ):
     if not request.session.get('verified_login'):
         raise HTTPException(status_code=401, detail="Unauthorized")
-    cover_image = cover_image.read()
-    entry_file = entry_file.read().decode("utf-8")
+    author_id = await users.get_user_uuid(cookie)
+    cover_image = await cover_image.read()
+    entry_file = await entry_file.read()
+    entry_file = entry_file.decode("utf-8")
     game_files = {file.filename: file.read() for file in game_files}
     for key, value in game_files.items():
         if key.endswith(".html") or key.endswith(".*js") or key.endswith(".css"):
@@ -93,7 +94,7 @@ async def post_game_data(
         raise HTTPException(status_code=400, detail=err)
 
 @app.put("/game/{game_id}")
-def update_game_data(
+async def update_game_data(
     request: Request,
     game_id: int,
     name: str = Form(...),
@@ -104,9 +105,10 @@ def update_game_data(
 ):
     if not request.session.get('verified_login'):
         raise HTTPException(status_code=401, detail="Unauthorized")
-    cover_image = cover_image.read()
-    entry_file = entry_file.read().decode("utf-8")
-    game_files = {file.filename: file.read() for file in game_files}
+    cover_image = await cover_image.read()
+    entry_file = await entry_file.read()
+    entry_file = entry_file.decode("utf-8")
+    game_files = {file.filename: await file.read() for file in game_files}
     for key, value in game_files.items():
         if key.endswith(".html") or key.endswith(".*js") or key.endswith(".css"):
             game_files[key] = value.decode("utf-8")

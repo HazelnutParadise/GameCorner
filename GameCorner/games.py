@@ -72,13 +72,11 @@ async def get_game_resource(id: int, file_name: str) -> bytes | None:
                     return utils.decode_base64(file_content_to_return)
             return None
 
-# TODO: 上傳遊戲到資料庫
-# TODO: 將game_files處理為 {file_name(str): file_content(base64)} 的形式
-# 本函數內容不正確
+# 上傳遊戲到資料庫
 async def post_game_data(title, description, author_id, cover_image, entry_file,  game_files) -> None | str:
     entry_file = utils.encode_base64(entry_file)
-    # cover_image 需先處理為 bytes 的形式
     cover_image = utils.encode_base64(cover_image)
+    game_files = {key: utils.encode_base64(value) for key, value in game_files.items()}
 
     game_data: dict = {
         "name": title,
@@ -104,14 +102,16 @@ async def post_game_data(title, description, author_id, cover_image, entry_file,
 
 
 # 更新現有遊戲到資料庫
-# TODO: 同上
 def update_game_data(id, name=None, description=None, cover_image=None, entry_file=None, game_files=None) -> None | str:
+    entry_file = utils.encode_base64(entry_file) if entry_file else None
+    cover_image = utils.encode_base64(cover_image) if cover_image else None
+    game_files = {key: utils.encode_base64(value) for key, value in game_files.items()} if game_files else None
     game_data: dict = {
-        "name": name,
-        "description": description,
-        "cover_image": cover_image,
-        "entry_file": entry_file,
-        "game_file": game_files
+        "name": name if name else None,
+        "description": description if description else None,
+        "cover_image": cover_image if cover_image else None,
+        "entry_file": entry_file if entry_file else None,
+        "game_file": game_files if game_files else None
     }
 
     # 將遊戲數據發送到api

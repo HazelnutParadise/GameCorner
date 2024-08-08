@@ -15,7 +15,6 @@ async def check_login(cookie) -> bool:
                 return False
 
 
-# TODO
 async def get_user_uuid(cookie) -> str:
     decode_cookie = urllib.parse.unquote(cookie)  # URI 解碼
     data = decode_cookie
