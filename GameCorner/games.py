@@ -20,7 +20,8 @@ def get_game_list(skip: int = 0, limit: int = 4) -> list:
             'return_as_dict': True
         })
     )
-    games = result.json()
+    resultJson = result.json()
+    games = resultJson.get('result')
 
     # games 是一個列表，每個元素是一個字典，代表一個遊戲
     # [
@@ -28,12 +29,21 @@ def get_game_list(skip: int = 0, limit: int = 4) -> list:
     #     'id': 1,
     #     'name': '遊戲1',
     #     'description': '這是遊戲1的描述',
-    #     'cover_image': 'data:image/png;base64,xxxxxx',
-    #     TODO: 'author': 'name',
+    #     'cover_image': 'data:image/png;base64,xxxxxx'
     # },
     # ...
     # ]
     return games
+
+async def get_game_list_by_author(author_id: int) -> list:
+    async with aiohttp.ClientSession() as session:
+        url = f"{Env.DB_RECORD_API}?relation=Games&conditions_str={json.dumps({'author_id': author_id})}"
+        async with session.get(url, headers={
+            'content-type': 'application/json'
+        }) as response:
+            resultJson = await response.json() if response.status == 200 else None
+            games = resultJson.get('result') if resultJson else None
+            return games
 
 
 # 從api獲取單個遊戲
